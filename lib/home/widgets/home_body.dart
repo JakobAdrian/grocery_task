@@ -3,6 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:grocery_task/home/models/cart.dart';
 import 'package:grocery_task/home/models/product.dart';
 import 'package:grocery_task/home/provider/products_provider.dart';
+import 'package:grocery_task/home/provider/wishlist_provider.dart';
+import 'package:grocery_task/home/repository/products_repository.dart';
 import 'package:grocery_task/home/widgets/action_headline.dart';
 import 'package:grocery_task/home/widgets/categories_section.dart';
 import 'package:grocery_task/home/widgets/hero_image.dart';
@@ -13,11 +15,9 @@ class HomeBody extends StatefulWidget {
   const HomeBody({
     Key? key,
     required this.cart,
-    required this.wishlist,
   }) : super(key: key);
 
   final Cart cart;
-  final List<Product> wishlist;
 
   @override
   State<HomeBody> createState() => _HomeBodyState();
@@ -57,11 +57,12 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   void toggleFavoriteList(Product product) {
+    final productModel = context.watch<WishlistProvider>();
     setState(() {
-      if (widget.wishlist.contains(product)) {
-        widget.wishlist.remove(product);
+      if (productModel.products.contains(product)) {
+        productModel.products.remove(product);
       } else {
-        widget.wishlist.add(product);
+        productModel.products.add(product);
       }
     });
   }
@@ -104,7 +105,7 @@ class _HomeBodyState extends State<HomeBody> {
                 onAddToCart: () => onAddItem(product),
                 onRemoveItem: () => onRemoveItem(product),
                 toggleFavorite: () => toggleFavoriteList(product),
-                isFavorite: widget.wishlist.contains(product),
+                isFavorite: productModel.products.contains(product),
               ),
             if (productModel.products.isEmpty && !productModel.isLoading)
               Column(

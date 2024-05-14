@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           child: [
             HomeBody(
               cart: cart,
-              wishlist: wishlist,
+              
             ),
             const CartPage(),
             WishlistPage(
