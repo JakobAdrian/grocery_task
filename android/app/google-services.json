@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "355132882847",
+    "project_id": "grocery-task-jakob",
+    "storage_bucket": "grocery-task-jakob.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355132882847:android:33204532d2e773a4a747aa",
+        "android_client_info": {
+          "package_name": "com.example.grocery_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeXQrLB06nu4QXkMp01BIxSLtu4MqtzT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

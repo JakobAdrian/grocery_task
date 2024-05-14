@@ -86,7 +86,7 @@ class _HomeBodyState extends State<HomeBody> {
         const SizedBox(height: 20),
         const HeroImage(),
         const SizedBox(height: 20),
-        CategoriesSection(),
+        const CategoriesSection(),
         const SizedBox(height: 20),
         const ActionHeadline(title: 'Featured products'),
         const SizedBox(height: 12),
@@ -107,7 +107,16 @@ class _HomeBodyState extends State<HomeBody> {
                 isFavorite: widget.wishlist.contains(product),
               ),
             if (productModel.products.isEmpty && !productModel.isLoading)
-              const Text('No products found'),
+              Column(
+                children: [
+                  const Text('No products found'),
+                  FilledButton(
+                      onPressed: context
+                          .read<ProductsProvider>()
+                          .addProductsToFirestore,
+                      child: const Text('Add products to Firestore')),
+                ],
+              ),
             if (productModel.isLoading)
               const Center(child: CircularProgressIndicator()),
           ],

@@ -13,6 +13,7 @@ class ProductItem extends StatelessWidget {
   });
 
   final Product product;
+
   final int quantity;
 
   final VoidCallback onAddToCart;
@@ -22,6 +23,7 @@ class ProductItem extends StatelessWidget {
   final VoidCallback toggleFavorite;
 
   final bool isFavorite;
+  
   @override
   Widget build(BuildContext context) {
     return Container(
