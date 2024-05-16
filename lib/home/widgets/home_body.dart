@@ -58,60 +58,66 @@ class _HomeBodyState extends State<HomeBody> {
   Widget build(BuildContext context) {
     final productModel = context.watch<ProductsProvider>();
 
-    return ListView(
+    return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(6),
-          child: const TextField(
-            decoration: InputDecoration(
-              hintText: 'Search keywords..',
-              prefixIcon: Icon(Icons.search),
-              fillColor: Color(0xffe4e5e9),
-              filled: true,
-              border: InputBorder.none,
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        const HeroImage(),
-        const SizedBox(height: 20),
-        const CategoriesSection(),
-        const SizedBox(height: 20),
-        const ActionHeadline(title: 'Featured products'),
-        const SizedBox(height: 12),
-        Wrap(
-          runSpacing: 20,
-          alignment: WrapAlignment.spaceBetween,
-          children: [
-            for (final product in productModel.products)
-              ProductItem(
-                product: product,
-                quantity: widget.cart.items
-                    .firstWhere((element) => element.product == product,
-                        orElse: () => CartItem(product: product, quantity: 0))
-                    .quantity,
-                onAddToCart: () => onAddItem(product),
-                onRemoveItem: () => onRemoveItem(product),
+        Expanded(
+          child: ListView(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: const TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search keywords..',
+                    prefixIcon: Icon(Icons.search),
+                    fillColor: Color(0xffe4e5e9),
+                    filled: true,
+                    border: InputBorder.none,
+                  ),
+                ),
               ),
-            if (productModel.products.isEmpty && !productModel.isLoading)
-              Column(
+              const SizedBox(height: 20),
+              const HeroImage(),
+              const SizedBox(height: 20),
+              const CategoriesSection(),
+              const SizedBox(height: 20),
+              const ActionHeadline(title: 'Featured products'),
+              const SizedBox(height: 12),
+              Wrap(
+                runSpacing: 20,
+                alignment: WrapAlignment.spaceBetween,
                 children: [
-                  const Text('No products found'),
-                  FilledButton(
-                      onPressed: () {
-                        context.read<ProductsProvider>().addProductsToFirestore();
-                      },
-                      child: const Text('Add products to Firestore')),
+                  for (final product in productModel.products)
+                    ProductItem(
+                      product: product,
+                      quantity: widget.cart.items
+                          .firstWhere((element) => element.product == product,
+                              orElse: () => CartItem(product: product, quantity: 0))
+                          .quantity,
+                      onAddToCart: () => onAddItem(product),
+                      onRemoveItem: () => onRemoveItem(product),
+                    ),
+                  if (productModel.products.isEmpty && !productModel.isLoading)
+                    Column(
+                      children: [
+                        const Text('No products found'),
+                        FilledButton(
+                            onPressed: () {
+                              context.read<ProductsProvider>().addProductsToFirestore();
+                            },
+                            child: const Text('Add products to Firestore')),
+                      ],
+                    ),
+                  if (productModel.isLoading)
+                    const Center(child: CircularProgressIndicator()),
                 ],
               ),
-            if (productModel.isLoading)
-              const Center(child: CircularProgressIndicator()),
-          ],
+              const SizedBox(
+                height: 22,
+              ),
+            ].animate(interval: const Duration(milliseconds: 100)).fadeIn(),
+          ),
         ),
-        const SizedBox(
-          height: 22,
-        ),
-      ].animate(interval: const Duration(milliseconds: 100)).fadeIn(),
+      ],
     );
   }
 }

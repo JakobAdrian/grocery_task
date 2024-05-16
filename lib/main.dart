@@ -10,7 +10,7 @@ import 'package:grocery_task/home/repository/wishlist_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +19,9 @@ void main() async {
   );
   final prefs = await SharedPreferences.getInstance();
   ProductsRepository productsRepository = ProductsRepository();
-  CategoryRepository categoryRepository = CategoryRepository();
+  CategoriesRepository categoriesRepository = CategoriesRepository();
   WishlistRepository wishlistRepository = WishlistRepository();
+
   runApp(
     MultiProvider(
       providers: [
@@ -28,10 +29,11 @@ void main() async {
           create: (context) => ProductsProvider(productsRepository),
         ),
         ChangeNotifierProvider(
-          create: (context) => CategoriesProvider(categoryRepository),
+          create: (context) => CategoriesProvider(categoriesRepository),
         ),
         ChangeNotifierProvider(
-            create: (context) => WishlistProvider(wishlistRepository)),
+          create: (context) => WishlistProvider(wishlistRepository),
+        ),
       ],
       child: App(
         preferences: prefs,

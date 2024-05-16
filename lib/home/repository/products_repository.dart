@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_task/home/models/product.dart';
 
 class ProductsRepository {
-  Future<List<Product>> getProducts() async {
-    await Future.delayed(const Duration(seconds: 2));
-
+  List<Product> getProducts() {
     return productsMock;
   }
 

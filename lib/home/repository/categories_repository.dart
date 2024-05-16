@@ -1,14 +1,37 @@
 import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grocery_task/home/models/category.dart';
 
-class CategoryRepository {
+class CategoriesRepository {
   List<Category> getCategories() {
     return categoriesMock;
   }
 
+ 
+
   Stream<List<Category>> getCategoriesStream() {
-    return Stream.value(categoriesMock);
+    return FirebaseFirestore.instance.collection('categories').snapshots().map(
+          (snapshot) => snapshot.docs
+              .map(
+                (doc) => Category.fromJson(doc.data()),
+              )
+              .toList(),
+        );
+  }
+
+  Future<void> addCategoriesToFirestore() async {
+    await FirebaseFirestore.instance.collection('categories').get().then(
+      (snapshot) {
+        snapshot.docs.forEach((doc) {
+          doc.reference.delete();
+        });
+      },
+    );
+    for (Category category in categoriesMock) {
+      await FirebaseFirestore.instance
+          .collection('categories')
+          .add(category.toJson());
+    }
   }
 }
 

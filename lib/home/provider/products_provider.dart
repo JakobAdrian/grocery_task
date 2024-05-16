@@ -16,7 +16,6 @@ class ProductsProvider with ChangeNotifier {
   void _loadProducts() async {
     isLoading = true;
     notifyListeners();
-
     productRepository.getProductsStream().listen((products) {
       _products.clear();
       _products.addAll(products);
