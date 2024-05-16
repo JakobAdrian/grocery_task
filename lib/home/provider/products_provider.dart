@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_task/home/models/product.dart';
 import 'package:grocery_task/home/repository/products_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class ProductsProvider with ChangeNotifier {
   final ProductsRepository productRepository;
@@ -16,11 +14,8 @@ class ProductsProvider with ChangeNotifier {
   }
 
   void _loadProducts() async {
-
-  isLoading = true;
-  notifyListeners();
-
-  
+    isLoading = true;
+    notifyListeners();
 
     productRepository.getProductsStream().listen((products) {
       _products.clear();
@@ -28,14 +23,14 @@ class ProductsProvider with ChangeNotifier {
       isLoading = false;
       notifyListeners();
     });
-}
+  }
 
   void addProduct(Product product) {
     _products.add(product);
     notifyListeners();
   }
-  void addProductsToFirestore()  {
+
+  void addProductsToFirestore() {
     productRepository.addProductToFirestore();
-   
   }
 }

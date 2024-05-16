@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_task/home/cart/cart_page.dart';
 import 'package:grocery_task/home/models/cart.dart';
 import 'package:grocery_task/home/models/product.dart';
+import 'package:grocery_task/home/provider/wishlist_provider.dart';
 import 'package:grocery_task/home/widgets/home_body.dart';
 import 'package:grocery_task/home/wishlist/wishlist_page.dart';
 import 'package:provider/provider.dart';
@@ -38,12 +39,9 @@ class _HomePageState extends State<HomePage> {
           child: [
             HomeBody(
               cart: cart,
-              
             ),
             const CartPage(),
-            WishlistPage(
-              wishlist: wishlist,
-            ),
+            const WishlistPage(),
           ][_selectedIndex],
         ),
         bottomNavigationBar: BottomNavigationBar(

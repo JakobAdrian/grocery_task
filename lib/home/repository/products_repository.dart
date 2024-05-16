@@ -28,7 +28,7 @@ class ProductsRepository {
       },
     );
     for (Product product in productsMock) {
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('products')
           .add(product.toFirestore());
     }

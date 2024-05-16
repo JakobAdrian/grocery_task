@@ -4,33 +4,29 @@ import 'package:grocery_task/home/repository/wishlist_repository.dart';
 
 class WishlistProvider with ChangeNotifier {
   final WishlistRepository wishlistRepository;
-  final List<Product> _products = [];
-  bool isLoading = false;
+  final List<Product> _wishlistProducts = [];
 
-  List<Product> get products => _products;
+  List<Product> get wishlistProducts => _wishlistProducts;
 
   WishlistProvider(this.wishlistRepository) {
-    _loadProducts();
+    _loadWishlistProducts();
+  }
+  void toggleFavorites(Product product) async {
+    if (_wishlistProducts
+        .where((element) => element.name == product.name)
+        .isNotEmpty) {
+      await wishlistRepository.removeProductFromWishlist(product);
+    } else {
+      wishlistRepository.addProductToWishlist(product);
+    }
+    notifyListeners();
   }
 
-  void _loadProducts() async {
-    isLoading = true;
-    notifyListeners();
-
-    wishlistRepository.getProductsStream().listen((products) {
-      _products.clear();
-      _products.addAll(products);
-      isLoading = false;
+  void _loadWishlistProducts() async {
+    wishlistRepository.getWishlistStream().listen((products) {
+      _wishlistProducts.clear();
+      _wishlistProducts.addAll(products);
       notifyListeners();
     });
-  }
-
-  void addProduct(Product product) {
-    _products.add(product);
-    notifyListeners();
-  }
-
-  void addProductsToFirestore() {
-    wishlistRepository.addProductToFirestore();
   }
 }

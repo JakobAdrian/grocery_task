@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -31,8 +30,8 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => CategoriesProvider(categoryRepository),
         ),
-        ChangeNotifierProvider(create: (context) => WishlistProvider(wishlistRepository) ),
-        
+        ChangeNotifierProvider(
+            create: (context) => WishlistProvider(wishlistRepository)),
       ],
       child: App(
         preferences: prefs,

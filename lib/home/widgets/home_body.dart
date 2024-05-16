@@ -3,8 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:grocery_task/home/models/cart.dart';
 import 'package:grocery_task/home/models/product.dart';
 import 'package:grocery_task/home/provider/products_provider.dart';
-import 'package:grocery_task/home/provider/wishlist_provider.dart';
-import 'package:grocery_task/home/repository/products_repository.dart';
 import 'package:grocery_task/home/widgets/action_headline.dart';
 import 'package:grocery_task/home/widgets/categories_section.dart';
 import 'package:grocery_task/home/widgets/hero_image.dart';
@@ -56,20 +54,10 @@ class _HomeBodyState extends State<HomeBody> {
     });
   }
 
-  void toggleFavoriteList(Product product) {
-    final productModel = context.watch<WishlistProvider>();
-    setState(() {
-      if (productModel.products.contains(product)) {
-        productModel.products.remove(product);
-      } else {
-        productModel.products.add(product);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final productModel = context.watch<ProductsProvider>();
+
     return ListView(
       children: [
         ClipRRect(
@@ -104,17 +92,15 @@ class _HomeBodyState extends State<HomeBody> {
                     .quantity,
                 onAddToCart: () => onAddItem(product),
                 onRemoveItem: () => onRemoveItem(product),
-                toggleFavorite: () => toggleFavoriteList(product),
-                isFavorite: productModel.products.contains(product),
               ),
             if (productModel.products.isEmpty && !productModel.isLoading)
               Column(
                 children: [
                   const Text('No products found'),
                   FilledButton(
-                      onPressed: context
-                          .read<ProductsProvider>()
-                          .addProductsToFirestore,
+                      onPressed: () {
+                        context.read<ProductsProvider>().addProductsToFirestore();
+                      },
                       child: const Text('Add products to Firestore')),
                 ],
               ),

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:grocery_task/home/models/category.dart';
 import 'package:grocery_task/utils/colors.dart';
 
@@ -8,13 +7,9 @@ class Product {
   final String description;
   final num price;
   final Category? category;
-
   final String imageAsset;
-
   final Color color;
-
   final ProductBadge? badge;
-
   const Product({
     required this.name,
     required this.description,

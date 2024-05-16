@@ -5,9 +5,7 @@ import 'package:grocery_task/home/provider/wishlist_provider.dart';
 import 'package:provider/provider.dart';
 
 class WishlistPage extends StatefulWidget {
-  const WishlistPage({required this.wishlist, Key? key}) : super(key: key);
-
-  final List<Product> wishlist;
+  const WishlistPage({Key? key}) : super(key: key);
 
   @override
   State<WishlistPage> createState() => _WishlistPageState();
@@ -24,16 +22,20 @@ class _WishlistPageState extends State<WishlistPage> {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 16),
-        if (productModel.products.isEmpty) const Text('Your wishlist is empty'),
-        for (var product in productModel.products)
+        if (productModel.wishlistProducts.isEmpty)
+          const Text('Your wishlist is empty'),
+        for (var product in productModel.wishlistProducts)
           ListTile(
             onTap: () {},
             title: Text(product.name),
             trailing: IconButton(
               onPressed: () {
-                setState(() {
-                  productModel.products.remove(product);
-                });
+                context.read<WishlistProvider>().toggleFavorites(product);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("${product.name} removed from wishlist"),
+                  ),
+                );
               },
               icon: const Icon(Icons.delete),
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_task/home/models/product.dart';
+import 'package:grocery_task/home/provider/wishlist_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem({
@@ -8,8 +10,6 @@ class ProductItem extends StatelessWidget {
     required this.quantity,
     required this.onAddToCart,
     required this.onRemoveItem,
-    required this.toggleFavorite,
-    required this.isFavorite,
   });
 
   final Product product;
@@ -20,10 +20,6 @@ class ProductItem extends StatelessWidget {
 
   final VoidCallback onRemoveItem;
 
-  final VoidCallback toggleFavorite;
-
-  final bool isFavorite;
-  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,13 +52,24 @@ class ProductItem extends StatelessWidget {
                   ),
                 ),
               const Spacer(),
-              IconButton(
-                onPressed: toggleFavorite,
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border_rounded,
-                  color: isFavorite ? Colors.red : null,
-                ),
-              ),
+              Builder(builder: (context) {
+                return IconButton(
+                  onPressed: () {
+                    context.read<WishlistProvider>().toggleFavorites(product);
+                  },
+                  icon: Consumer<WishlistProvider>(
+                      builder: (context, model, child) {
+                    final isFavorite = model.wishlistProducts
+                      .where((element) => element.name == product.name).isNotEmpty;
+                    return Icon(
+                      isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border_rounded,
+                      color: isFavorite ? Colors.red : null,
+                    );
+                  }),
+                );
+              }),
             ],
           ),
           Padding(
